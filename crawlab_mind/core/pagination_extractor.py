@@ -1,0 +1,2 @@
+class PaginationExtractor(object):
+    pass

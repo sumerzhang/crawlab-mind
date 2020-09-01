@@ -1,10 +1,8 @@
 from collections import defaultdict
 
 from crawlab_mind.core.html_list import HtmlList
+from crawlab_mind.setting import MAX_SUB_LEVEL, MIN_LIST_ITEM_COUNT
 from crawlab_mind.utils import is_invalid_tag
-
-MAX_SUB_LEVEL = 5
-MIN_LIST_ITEM_COUNT = 8
 
 
 class HtmlNode(object):

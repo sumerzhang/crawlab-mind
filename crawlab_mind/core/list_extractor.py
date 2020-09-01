@@ -5,10 +5,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import PCA
 
 from crawlab_mind.core.html_node import HtmlNode, HtmlNodeCollection
+from crawlab_mind.setting import MIN_CHILDREN_COUNT, PCA_N_COMPONENTS
 from crawlab_mind.utils import is_invalid_tag
-
-MIN_CHILDREN_COUNT = 5
-PCA_N_COMPONENTS = 10
 
 
 class ListExtractor(object):
