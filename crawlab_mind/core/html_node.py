@@ -1,7 +1,4 @@
-from collections import defaultdict
-
-from crawlab_mind.core.html_list import HtmlList
-from crawlab_mind.setting import MAX_SUB_LEVEL, MIN_LIST_ITEM_COUNT
+from crawlab_mind.setting import MAX_SUB_LEVEL
 from crawlab_mind.utils import is_invalid_tag
 
 
@@ -78,28 +75,3 @@ class HtmlNode(object):
     @property
     def inner_text(self) -> str:
         return self.get_inner_text()
-
-
-class HtmlNodeCollection(object):
-    def __init__(self, nodes):
-        self.nodes = nodes
-        self.parent = None
-        self.lists = self.get_lists()
-
-    def get_lists(self) -> list:
-        # compute parent count
-        parent_dict = defaultdict(list)
-        for node in self.nodes:
-            parent_dict[node.el.getparent()].append(node.el)
-
-        # get html lists
-        lists = []
-        for parent, items in parent_dict.items():
-            if len(items) < MIN_LIST_ITEM_COUNT:
-                continue
-            html_list = HtmlList(parent, items)
-            lists.append(html_list)
-        return lists
-
-    def has_lists(self) -> bool:
-        return len(self.lists) > 0
