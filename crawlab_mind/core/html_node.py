@@ -49,7 +49,7 @@ class HtmlNode(object):
     def get_children_count(self):
         return len([_ for _ in self.get_attributes()])
 
-    def get_inner_text(self):
+    def get_inner_text(self) -> str:
         return ''.join(self.el.itertext())
 
     @property
@@ -75,3 +75,4 @@ class HtmlNode(object):
     @property
     def inner_text(self) -> str:
         return self.get_inner_text()
+

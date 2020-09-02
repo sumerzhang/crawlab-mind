@@ -8,5 +8,5 @@ PCA_N_COMPONENTS = 10
 MAX_SUB_LEVEL = 5
 
 # list item collections with number of list items less than threshold will be discarded
-MIN_LIST_ITEM_COUNT = 5
+MIN_LIST_ITEM_COUNT = 8
 

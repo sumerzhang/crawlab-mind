@@ -8,6 +8,8 @@ class HtmlListItem(object):
         self.links = self.get_links(el)
         self.images = self.get_images(el)
         self.texts = self.get_texts(el)
+        self.max_text = self.get_max_text(el)
+        self.text_tag_count = self.get_text_tag_count(el)
 
     @staticmethod
     def get_links(el: Element) -> list:
@@ -37,6 +39,17 @@ class HtmlListItem(object):
                 continue
             texts.append(text.strip())
         return texts
+
+    @staticmethod
+    def get_max_text(el) -> str:
+        max_text = ''
+        for text in el.itertext():
+            if len(text.strip()) > len(max_text):
+                max_text = text.strip()
+        return max_text
+
+    def get_text_tag_count(self, el) -> int:
+        return len(self.get_texts(el))
 
     def to_dict(self):
         return dict(

@@ -4,6 +4,7 @@ from sklearn.cluster import DBSCAN
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import PCA
 
+from crawlab_mind.constants.list import ListSelectMethod
 from crawlab_mind.core.html_list_collection import HtmlNodeCollection
 from crawlab_mind.core.html_node import HtmlNode
 from crawlab_mind.setting import MIN_CHILDREN_COUNT, PCA_N_COMPONENTS
@@ -70,3 +71,35 @@ class ListExtractor(object):
                 for html_list in node_col.get_lists():
                     html_lists.append(html_list)
         return html_lists
+
+    def extract_all(self) -> list:
+        return self.extract()
+
+    def extract_best(self, method=ListSelectMethod.MeanMaxTextLength):
+        html_list = self.extract_all()
+        if method == ListSelectMethod.MeanMaxTextLength:
+            return self._extract_by_mean_max_text_length(html_list)
+        elif method == ListSelectMethod.MeanTextTagCount:
+            return self._extract_by_mean_text_tag_count(html_list)
+
+    @staticmethod
+    def _extract_by_mean_max_text_length(html_list) -> list:
+        best_html_list = None
+        max_length = 0
+        for html_list in html_list:
+            length = html_list.get_mean_max_text_length()
+            if length > max_length:
+                best_html_list = html_list
+                max_length = length
+        return best_html_list
+
+    @staticmethod
+    def _extract_by_mean_text_tag_count(html_list) -> list:
+        best_html_list = None
+        max_count = 0
+        for html_list in html_list:
+            length = html_list.get_mean_text_tag_count()
+            if length > max_count:
+                best_html_list = html_list
+                max_count = length
+        return best_html_list
