@@ -13,7 +13,7 @@ def extract_list(html_source_path, method=ListSelectMethod.MeanMaxTextLength):
 
 
 if __name__ == '__main__':
-    file_path = '/Users/marvzhang/projects/crawlab-team/crawlab-mind/tmp/1688.html'
+    file_path = '/Users/marvzhang/projects/crawlab-team/crawlab-mind/tmp/autohome.html'
     html_lists = extract_lists(file_path)
     print(html_lists)
     html_list = extract_list(file_path, method=ListSelectMethod.MeanTextTagCount)

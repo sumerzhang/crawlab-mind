@@ -76,30 +76,28 @@ class ListExtractor(object):
         return self.extract()
 
     def extract_best(self, method=ListSelectMethod.MeanMaxTextLength):
-        html_list = self.extract_all()
+        html_lists = self.extract_all()
         if method == ListSelectMethod.MeanMaxTextLength:
-            return self._extract_by_mean_max_text_length(html_list)
+            return self._extract_by_mean_max_text_length(html_lists)
         elif method == ListSelectMethod.MeanTextTagCount:
-            return self._extract_by_mean_text_tag_count(html_list)
+            return self._extract_by_mean_text_tag_count(html_lists)
+        else:
+            return []
 
     @staticmethod
-    def _extract_by_mean_max_text_length(html_list) -> list:
+    def _extract_by_attr_value(html_lists, html_list_attr, is_max=True) -> list:
         best_html_list = None
-        max_length = 0
-        for html_list in html_list:
-            length = html_list.get_mean_max_text_length()
-            if length > max_length:
+        best_value = 0
+        for html_list in html_lists:
+            value = getattr(html_list, html_list_attr)
+            condition = value > best_value if is_max else value < best_value
+            if condition:
                 best_html_list = html_list
-                max_length = length
+                best_value = value
         return best_html_list
 
-    @staticmethod
-    def _extract_by_mean_text_tag_count(html_list) -> list:
-        best_html_list = None
-        max_count = 0
-        for html_list in html_list:
-            length = html_list.get_mean_text_tag_count()
-            if length > max_count:
-                best_html_list = html_list
-                max_count = length
-        return best_html_list
+    def _extract_by_mean_max_text_length(self, html_lists) -> list:
+        return self._extract_by_attr_value(html_lists, 'mean_max_text_length', True)
+
+    def _extract_by_mean_text_tag_count(self, html_lists) -> list:
+        return self._extract_by_attr_value(html_lists, 'mean_text_tag_count', True)
