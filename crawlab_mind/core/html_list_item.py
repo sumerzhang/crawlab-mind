@@ -12,6 +12,7 @@ class HtmlListItem(object):
         self.images = self.get_images(el)
         self.texts = self.get_texts(el)
         self.max_text = self.get_max_text(el)
+        self.max_text_length = self.get_max_text_length(el)
         self.text_tag_count = self.get_text_tag_count(el)
 
     @staticmethod
@@ -50,6 +51,9 @@ class HtmlListItem(object):
             if len(text.strip()) > len(max_text):
                 max_text = text.strip()
         return max_text
+
+    def get_max_text_length(self, el) -> int:
+        return len(self.get_max_text(el))
 
     def get_text_tag_count(self, el) -> int:
         return len(self.get_texts(el))

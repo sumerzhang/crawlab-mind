@@ -1,9 +1,11 @@
 from collections import defaultdict
 
+from crawlab_mind.core.html_base import HtmlBase
 from crawlab_mind.core.html_list import HtmlList
+from crawlab_mind.utils import get_list_select_method
 
 
-class HtmlNodeCollection(object):
+class HtmlNodeCollection(HtmlBase):
     def __init__(self, nodes, min_list_item_count=5):
         # parameters
         self.min_list_item_count = min_list_item_count
@@ -12,6 +14,7 @@ class HtmlNodeCollection(object):
         self.nodes = nodes
         self.parent = None
         self.lists = self.get_lists()
+        self.items = self.get_items()
 
     def get_lists(self) -> list:
         # compute parent count
@@ -30,3 +33,14 @@ class HtmlNodeCollection(object):
 
     def has_lists(self) -> bool:
         return len(self.lists) > 0
+
+    def get_items(self) -> list:
+        items = []
+        for html_list in self.lists:
+            for item in html_list.items:
+                items.append(item)
+        return items
+
+    def get_score(self, method) -> float:
+        method_obj = get_list_select_method(method)
+        return self.get_mean_value(self.items, method_obj.item_attr)
