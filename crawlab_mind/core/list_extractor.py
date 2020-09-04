@@ -6,19 +6,20 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from crawlab_mind.constants.list import ListSelectMethod
 from crawlab_mind.core.html_list_collection import HtmlNodeCollection
 from crawlab_mind.core.html_node import HtmlNode
-from crawlab_mind.entity.method import Method
 from crawlab_mind.utils import is_invalid_tag, get_list_select_method
 
 
 class ListExtractor(object):
-    def __init__(self, html_source_path, min_children_count=3, max_sub_level=5, min_list_item_count=5, **kwargs):
+    def __init__(self, html_source_path, min_children_count=3, max_sub_level=5, min_item_count=3,
+                 max_link_count=5, eps=0.2, min_samples=5, metric='cosine', **kwargs):
         # html source path
         self.html_source_path = html_source_path
 
         # parameters
         self.min_children_count = min_children_count
         self.max_sub_level = max_sub_level
-        self.min_list_item_count = min_list_item_count
+        self.min_item_count = min_item_count
+        self.max_link_count = max_link_count
 
         # construct dom tree
         with open(html_source_path) as f:
@@ -51,7 +52,7 @@ class ListExtractor(object):
         self.X = self.vec.transform(self.docs)
 
         # clusterer
-        self.cl = DBSCAN()
+        self.cl = DBSCAN(eps=eps, min_samples=min_samples, metric=metric)
 
         # pca
         # self.pca = PCA(n_components=PCA_N_COMPONENTS)
@@ -73,7 +74,11 @@ class ListExtractor(object):
             nodes = np.array(self.nodes)[mask]
 
             # html node collection
-            node_col = HtmlNodeCollection(nodes, min_list_item_count=self.min_list_item_count)
+            node_col = HtmlNodeCollection(
+                nodes,
+                min_item_count=self.min_item_count,
+                max_link_count=self.max_link_count,
+            )
 
             if node_col.has_lists():
                 node_collections.append(node_col)
@@ -90,10 +95,7 @@ class ListExtractor(object):
 
     def extract_best_node_collection(self, method=ListSelectMethod.MeanMaxTextLength):
         node_collections = self.extract_html_node_collections()
-        attr = self._get_item_attr_by_method(method)
-        if attr is None:
-            return None
-        return self._extract_by_attr_value(node_collections, attr, is_max=True)
+        return self._extract_by_method(node_collections, method, is_max=True)
 
     def extract_items(self, method=ListSelectMethod.MeanMaxTextLength) -> list:
         items = []

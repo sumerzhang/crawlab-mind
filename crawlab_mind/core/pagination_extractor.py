@@ -6,9 +6,9 @@ from crawlab_mind.core.html_list_item import HtmlListItem
 
 
 class PaginationExtractor(ListExtractor):
-    def __init__(self, html_source_path, min_children_count=1, max_sub_level=2, min_list_item_count=4, **kwargs):
+    def __init__(self, html_source_path, min_children_count=1, max_sub_level=2, min_item_count=4, **kwargs):
         super().__init__(html_source_path, min_children_count=min_children_count, max_sub_level=max_sub_level,
-                         min_list_item_count=min_list_item_count, **kwargs)
+                         min_item_count=min_item_count, **kwargs)
         self.regex_int = re.compile(r'^\d+$')
 
     def extract_custom(self, html_lists) -> list:

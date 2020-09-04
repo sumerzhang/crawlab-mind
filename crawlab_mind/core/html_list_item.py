@@ -14,6 +14,7 @@ class HtmlListItem(object):
         self.max_text = self.get_max_text(el)
         self.max_text_length = self.get_max_text_length(el)
         self.text_tag_count = self.get_text_tag_count(el)
+        self.link_count = self.get_link_count(el)
 
     @staticmethod
     def get_links(el: Element) -> list:
@@ -57,6 +58,9 @@ class HtmlListItem(object):
 
     def get_text_tag_count(self, el) -> int:
         return len(self.get_texts(el))
+
+    def get_link_count(self, el: Element) -> int:
+        return len(self.get_links(el))
 
     def to_dict(self):
         return dict(
