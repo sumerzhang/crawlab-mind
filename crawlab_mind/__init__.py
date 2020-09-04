@@ -54,7 +54,7 @@ def test_extract_multi_list_items(file_path):
 
 
 if __name__ == '__main__':
-    file_path = '/Users/marvzhang/projects/crawlab-team/crawlab-mind/tmp/juejin.html'
+    file_path = '/Users/marvzhang/projects/crawlab-team/crawlab-mind/tmp/baidu.html'
     test_extract_best_list(file_path)
-    # test_extract_best_pagination(file_path)
+    test_extract_best_pagination(file_path)
     # test_extract_multi_list_items(file_path)
