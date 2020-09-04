@@ -1,13 +1,13 @@
-from crawlab_mind.setting import MAX_SUB_LEVEL
 from crawlab_mind.utils import is_invalid_tag
 
 
 class HtmlNode(object):
-    def __init__(self, el, root=None):
+    def __init__(self, el, root=None, max_sub_level=5):
         self.el = el
         self.root = root
         if root is None:
             self.root = el
+        self.max_sub_level = max_sub_level
 
     def get_path(self):
         paths = []
@@ -38,7 +38,7 @@ class HtmlNode(object):
             el = self.el
         if root is None:
             root = self.el
-        if level >= MAX_SUB_LEVEL:
+        if level >= self.max_sub_level:
             return []
         node = HtmlNode(el, root)
         yield node.get_path()
@@ -75,4 +75,3 @@ class HtmlNode(object):
     @property
     def inner_text(self) -> str:
         return self.get_inner_text()
-

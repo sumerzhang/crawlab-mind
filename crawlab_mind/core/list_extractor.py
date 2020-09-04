@@ -2,32 +2,40 @@ from lxml import etree
 import numpy as np
 from sklearn.cluster import DBSCAN
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.decomposition import PCA
 
 from crawlab_mind.constants.list import ListSelectMethod
 from crawlab_mind.core.html_list_collection import HtmlNodeCollection
 from crawlab_mind.core.html_node import HtmlNode
-from crawlab_mind.setting import MIN_CHILDREN_COUNT, PCA_N_COMPONENTS
 from crawlab_mind.utils import is_invalid_tag
 
 
 class ListExtractor(object):
-    def __init__(self, html_source_path):
+    def __init__(self, html_source_path, min_children_count=3, max_sub_level=5, min_list_item_count=5, **kwargs):
+        # html source path
+        self.html_source_path = html_source_path
+
+        # parameters
+        self.min_children_count = min_children_count
+        self.max_sub_level = max_sub_level
+        self.min_list_item_count = min_list_item_count
+
+        # construct dom tree
         with open(html_source_path) as f:
             raw = f.read()
         self.tree = etree.HTML(raw)
+
         self.docs = []
         self.nodes = []
         for el in self.tree.iter():
             # html node
-            node = HtmlNode(el)
+            node = HtmlNode(el, max_sub_level=max_sub_level)
 
             # exclude invalid tags
             if is_invalid_tag(el):
                 continue
 
             # exclude too-few children tags
-            if node.children_count < MIN_CHILDREN_COUNT:
+            if node.children_count < min_children_count:
                 continue
 
             # added to list
@@ -45,7 +53,7 @@ class ListExtractor(object):
         self.cl = DBSCAN()
 
         # pca
-        self.pca = PCA(n_components=PCA_N_COMPONENTS)
+        # self.pca = PCA(n_components=PCA_N_COMPONENTS)
 
         # data array transformed by pca
         # self.X_transformed = self.pca.fit_transform(self.X.todense())
@@ -65,7 +73,7 @@ class ListExtractor(object):
             nodes = np.array(self.nodes)[mask]
 
             # html node collection
-            node_col = HtmlNodeCollection(nodes)
+            node_col = HtmlNodeCollection(nodes, min_list_item_count=self.min_list_item_count)
 
             if node_col.has_lists():
                 for html_list in node_col.get_lists():
@@ -81,8 +89,14 @@ class ListExtractor(object):
             return self._extract_by_mean_max_text_length(html_lists)
         elif method == ListSelectMethod.MeanTextTagCount:
             return self._extract_by_mean_text_tag_count(html_lists)
+        elif method == ListSelectMethod.Custom:
+            return self.extract_custom(html_lists)
         else:
             return []
+
+    def extract_custom(self, html_lists) -> list:
+        # to be implemented
+        raise NotImplementedError
 
     @staticmethod
     def _extract_by_attr_value(html_lists, html_list_attr, is_max=True) -> list:

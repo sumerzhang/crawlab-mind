@@ -1,10 +1,13 @@
 from lxml.html import Element
 
+from crawlab_mind.core.html_node import HtmlNode
+
 
 class HtmlListItem(object):
     def __init__(self, root, el):
         self.root = root
         self.el = el
+        self.node = HtmlNode(el)
         self.links = self.get_links(el)
         self.images = self.get_images(el)
         self.texts = self.get_texts(el)
