@@ -10,7 +10,7 @@ from crawlab_mind.utils import is_invalid_tag, get_list_select_method
 
 
 class ListExtractor(object):
-    def __init__(self, html_source_path, min_children_count=3, max_sub_level=5, min_item_count=3,
+    def __init__(self, html_source_path, min_children_count=3, max_sub_level=5, min_item_count=5,
                  max_link_count=5, eps=0.2, min_samples=5, metric='cosine', **kwargs):
         # html source path
         self.html_source_path = html_source_path

@@ -54,7 +54,7 @@ def test_extract_multi_list_items(file_path):
 
 
 if __name__ == '__main__':
-    file_path = '/Users/marvzhang/projects/crawlab-team/crawlab-mind/tmp/autohome_param_detail.html'
+    file_path = '/Users/marvzhang/projects/crawlab-team/crawlab-mind/tmp/v2ex_detail.html'
     test_extract_best_list(file_path)
     # test_extract_best_pagination(file_path)
     # test_extract_multi_list_items(file_path)
