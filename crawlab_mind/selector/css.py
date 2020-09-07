@@ -1,0 +1,2 @@
+class CssSelector(object):
+    pass

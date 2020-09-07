@@ -25,4 +25,4 @@ class HtmlList(HtmlBase):
         return self.get_mean_value(self.items, method_obj.item_attr)
 
     def __repr__(self):
-        return f'<HtmlList: root: {HtmlNode(self.root).get_self_path()}, items: {len(self.items)}>'
+        return f'<HtmlList: root: {HtmlNode(self.root).get_self_notation()}, items: {len(self.items)}>'

@@ -41,7 +41,7 @@ class ListExtractor(object):
                 continue
 
             # added to list
-            self.docs.append(node.attributes_text)
+            self.docs.append(node.notations_text)
             self.nodes.append(node)
 
         # vectorizer
