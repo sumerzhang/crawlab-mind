@@ -77,4 +77,4 @@ The methodology about the auto-extraction functionality is quite simple. It is b
 
 Below is the illustration of the algorithm.
 
-![](http://static-docs.crawlab.cn/crawlab-mind-list-auto-extraction-algorithm.png)
+![](http://static-docs.crawlab.cn/crawlab-mind-list-auto-extraction-algorithm.png?_1)
