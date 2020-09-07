@@ -74,3 +74,7 @@ for item in html_list.all_items:
 ## Auto-Extraction Algorithms
 
 The methodology about the auto-extraction functionality is quite simple. It is based on the tree-like data structure of HTML. By converting each HTML Node into a high-dimensional data based on their attributes (tag names and class names), we are able to apply the clustering algorithm to the high-dimensional dataset to get candidate lists. Finally, the extractor will use a selection method to choose the best list element.
+
+Below is the illustration of the algorithm.
+
+![](http://static-docs.crawlab.cn/crawlab-mind-list-auto-extraction-algorithm.png)
